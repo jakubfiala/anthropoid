@@ -32,6 +32,15 @@
   a, a:visited {
     color: crimson;
   }
+
+  label {
+    display: block;
+    margin: 5px 0 10px;
+  }
+
+  legend {
+    font-weight: bold;
+  }
 </style>
 <body>
   <main>
@@ -50,8 +59,30 @@
       </pre>
     </figure>
     <h1>Local Gateway</h1>
-    <p>There should be something here eventually.</p>
+    <h2>Controls</h2>
+    <form>
+      <fieldset>
+        <legend>Audio</legend>
+        <label for="volume">Sound volume</label>
+        <input id="volume" type="range" name="volume" value="100" min="0" max="100">
+      </fieldset>
+    </form>
   </main>
 </body>
+<script type="text/javascript">
+  const COMMAND_ENDPOINT = `${location.protocol}//${location.host}/control`;
+
+  const changeVolume = slider => e => {
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+
+    const body = { command: 'volume', data: { value: parseInt(slider.value) }};
+
+    fetch(COMMAND_ENDPOINT, { method: 'POST', headers, body: JSON.stringify(body) })
+      .catch(err => { throw err; });
+  }
+
+  const volumeSlider = document.getElementById('volume');
+  volumeSlider.addEventListener('change', changeVolume(volumeSlider));
+</script>
 </html>
 
