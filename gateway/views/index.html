@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>test</title>
+  <title>anthropoid/gateway</title>
 </head>
 <style type="text/css">
   * {
@@ -63,7 +63,7 @@
     <form>
       <fieldset>
         <legend>Audio</legend>
-        <label for="volume">Sound volume</label>
+        <label for="volume"><strong>Sound volume:</strong> <output id="volume-output">100</output>%</label>
         <input id="volume" type="range" name="volume" value="100" min="0" max="100">
       </fieldset>
     </form>
@@ -72,7 +72,9 @@
 <script type="text/javascript">
   const COMMAND_ENDPOINT = `${location.protocol}//${location.host}/control`;
 
-  const changeVolume = slider => e => {
+  const changeVolume = (slider, output) => e => {
+    output.innerText = slider.value;
+
     const headers = new Headers({ 'Content-Type': 'application/json' });
 
     const body = { command: 'volume', data: { value: parseInt(slider.value) }};
@@ -82,7 +84,8 @@
   }
 
   const volumeSlider = document.getElementById('volume');
-  volumeSlider.addEventListener('change', changeVolume(volumeSlider));
+  const volumeOutput = document.getElementById('volume-output');
+  volumeSlider.addEventListener('change', changeVolume(volumeSlider, volumeOutput));
 </script>
 </html>
 
