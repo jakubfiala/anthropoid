@@ -21,7 +21,7 @@ app.get('/control/volume', function(req, res) {
 });
 
 app.post('/control/volume', function(req, res) {
-  const { value } = req.body;
+  const value = req.body.value;
 
   commands
     .setVolume(value)

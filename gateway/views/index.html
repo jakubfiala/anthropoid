@@ -93,8 +93,8 @@
 
   getVolume(volumeSlider, volumeOutput)
     .then(initialValue => {
-      slider.value = ~~initialValue;
-      output.innerText = initialValue;
+      volumeSlider.value = ~~initialValue;
+      volumeOutput.innerText = initialValue.replace(/[^0-9]/, '');
 
       volumeSlider.addEventListener('change', setVolume(volumeSlider, volumeOutput));
     })
