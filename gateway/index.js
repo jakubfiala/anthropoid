@@ -14,18 +14,18 @@ app.get('/', function(req, res) {
   return res.render('index');
 });
 
-app.post('/control', function(req, res) {
-  const { command, data } = req.body;
+app.get('/control/volume', function(req, res) {
+  commands
+    .getVolume()
+    .then(output => res.send(output));
+});
 
-  switch(command) {
-    case 'volume':
-      commands.volume(data.value)
-        .then(output => res.send(output));
-      break;
-    default:
-      res.status(400).send('unknown command');
-      break;
-  }
+app.post('/control/volume', function(req, res) {
+  const { value } = req.body;
+
+  commands
+    .setVolume(value)
+    .then(output => res.send(output));
 });
 
 app.listen(3333, () => console.info('Server started'));

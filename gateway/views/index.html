@@ -72,20 +72,34 @@
 <script type="text/javascript">
   const COMMAND_ENDPOINT = `${location.protocol}//${location.host}/control`;
 
-  const changeVolume = (slider, output) => e => {
+  const setVolume = (slider, output) => e => {
     output.innerText = slider.value;
 
     const headers = new Headers({ 'Content-Type': 'application/json' });
 
-    const body = { command: 'volume', data: { value: parseInt(slider.value) }};
+    const body = { value: parseInt(slider.value) };
 
-    fetch(COMMAND_ENDPOINT, { method: 'POST', headers, body: JSON.stringify(body) })
+    fetch(`${COMMAND_ENDPOINT}/volume`, { method: 'POST', headers, body: JSON.stringify(body) })
       .catch(err => { throw err; });
   }
 
+  const getVolume = (slider, output) => {
+    return fetch(`${COMMAND_ENDPOINT}/volume`)
+      .then(res => res.text());
+  };
+
   const volumeSlider = document.getElementById('volume');
   const volumeOutput = document.getElementById('volume-output');
-  volumeSlider.addEventListener('change', changeVolume(volumeSlider, volumeOutput));
+
+  getVolume(volumeSlider, volumeOutput)
+    .then(initialValue => {
+      slider.value = ~~initialValue;
+      output.innerText = initialValue;
+
+      volumeSlider.addEventListener('change', setVolume(volumeSlider, volumeOutput));
+    })
+    .catch(err => { throw err; });
+
 </script>
 </html>
 
