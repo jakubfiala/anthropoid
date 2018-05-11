@@ -28,4 +28,10 @@ app.post('/control/volume', function(req, res) {
     .then(output => res.send(output));
 });
 
+app.get('/control/stats', function(req, res) {
+  commands
+    .getStats()
+    .then(output => res.json(JSON.parse(output)));
+})
+
 app.listen(3333, () => console.info('Server started'));

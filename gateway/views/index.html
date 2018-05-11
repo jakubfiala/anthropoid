@@ -41,6 +41,25 @@
   legend {
     font-weight: bold;
   }
+
+	table {
+		border-collapse: collapse;
+	}
+
+	td, th {
+		border: solid 1px;
+		padding: .5em;
+	}
+
+	thead {
+		background: rgba(0,0,0,0.1);
+		font-weight: bold:
+	}
+
+	td:not(:first-of-type) {
+		text-align: right;
+	}
+  
 </style>
 <body>
   <main>
@@ -67,6 +86,33 @@
         <input id="volume" type="range" name="volume" value="100" min="0" max="100">
       </fieldset>
     </form>
+
+		<section>
+    	<h2>Stats</h2>
+			<table>
+				<thead>
+					<tr><th>Metric</th><th>Value</th></tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>CPU (User)</td>
+						<td><output id="cpu-user"></output>%</td>
+					</tr>
+					<tr>
+						<td>CPU (Idle)</td>
+						<td><output id="cpu-idle"></output>%</td>
+					</tr>
+					<tr>
+            <td>Memory (Free)</td>
+            <td><output id="memory-free"></output>B</td>
+          </tr>
+					<tr>
+            <td>Memory (Total)</td>
+            <td><output id="memory-total"></output>B</td>
+          </tr>
+				</tbody>
+			</table>
+		</section>
   </main>
 </body>
 <script type="text/javascript">
@@ -83,7 +129,7 @@
       .catch(err => { throw err; });
   }
 
-  const getVolume = (slider, output) => {
+  const getVolume = () => {
     return fetch(`${COMMAND_ENDPOINT}/volume`)
       .then(res => res.text());
   };
@@ -91,7 +137,7 @@
   const volumeSlider = document.getElementById('volume');
   const volumeOutput = document.getElementById('volume-output');
 
-  getVolume(volumeSlider, volumeOutput)
+  getVolume()
     .then(initialValue => {
       volumeSlider.value = ~~initialValue;
       volumeOutput.innerText = initialValue.replace(/[^0-9]/, '');
@@ -99,6 +145,26 @@
       volumeSlider.addEventListener('change', setVolume(volumeSlider, volumeOutput));
     })
     .catch(err => { throw err; });
+
+	
+	const cpuUser = document.getElementById('cpu-user');
+	const cpuIdle = document.getElementById('cpu-idle');
+	const memoryTotal = document.getElementById('memory-total');
+	const memoryFree = document.getElementById('memory-free');
+	
+	const getStats = () => {
+		return fetch(`${COMMAND_ENDPOINT}/stats`)
+			.then(res => res.json());
+	}
+
+	setInterval(() =>
+	getStats()
+		.then(stats => {
+			cpuUser.innerText = stats.cpu.user.toFixed(2);
+			cpuIdle.innerText = stats.cpu.idle.toFixed(2);
+			memoryTotal.innerText = stats.memory.total;
+			memoryFree.innerText = stats.memory.free;
+		}), 5000);
 
 </script>
 </html>

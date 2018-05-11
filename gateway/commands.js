@@ -13,7 +13,13 @@ const setVolume = value => {
   return exec(shellCmd, { env }).then(({ stdout }) => stdout);
 }
 
+const getStats = value => {
+  const shellCmd = 'bash ./scripts/get_stats.sh';
+  return exec(shellCmd).then(({ stdout }) => stdout);
+}
+
 module.exports = {
   setVolume,
-  getVolume
+  getVolume,
+  getStats
 };
