@@ -1,0 +1,14 @@
+[Unit]
+Description=Airplay server
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=pi
+ExecStart=/usr/bin/env bash /home/pi/anthropoid/airplay/start.sh
+
+[Install]
+WantedBy=multi-user.target

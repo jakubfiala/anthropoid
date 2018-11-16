@@ -85,6 +85,10 @@
         <label for="volume"><strong>Sound volume:</strong> <output id="volume-output">100</output>%</label>
         <input id="volume" type="range" name="volume" value="100" min="0" max="100">
       </fieldset>
+			<fieldset>
+				<legend>Airplay</legend>
+				<input type="button" id="restart-airplay" value="Restart">
+			</fieldset>
     </form>
 
 		<section>
@@ -133,6 +137,14 @@
     return fetch(`${COMMAND_ENDPOINT}/volume`)
       .then(res => res.text());
   };
+
+  const restartAirplay = e => {
+		fetch(`${COMMAND_ENDPOINT}/restart-airplay`, { method: 'POST' })
+			.catch(err => { throw err; });
+	};
+
+	const airplayRestartBtn = document.getElementById('restart-airplay');
+  airplayRestartBtn.addEventListener('click', restartAirplay);
 
   const volumeSlider = document.getElementById('volume');
   const volumeOutput = document.getElementById('volume-output');

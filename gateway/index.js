@@ -32,6 +32,12 @@ app.get('/control/stats', function(req, res) {
   commands
     .getStats()
     .then(output => res.json(JSON.parse(output)));
-})
+});
+
+app.post('/control/restart-airplay', function(req, res) {
+  commands
+    .restartAirplay()
+    .then(output => res.send(output));
+});
 
 app.listen(3333, () => console.info('Server started'));

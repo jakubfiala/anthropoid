@@ -18,8 +18,14 @@ const getStats = value => {
   return exec(shellCmd).then(({ stdout }) => stdout);
 }
 
+const restartAirplay = () => {
+  const shellCmd = 'sudo systemctl restart airplay';
+  return exec(shellCmd).then(({ stdout }) => stdout);
+}
+
 module.exports = {
   setVolume,
   getVolume,
-  getStats
+  getStats,
+  restartAirplay
 };
