@@ -2,4 +2,4 @@
 set -o errexit
 set -o nounset
 
-amixer set PCM -- "$VOLUME_VALUE%"
+amixer set Master -- "$VOLUME_VALUE%"

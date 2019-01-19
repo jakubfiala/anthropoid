@@ -4,4 +4,4 @@ set -o nounset
 
 AMIXER_VOLUME_REGEX="(?<=\[)([0-9]+)(?=%\])"
 
-amixer get PCM | grep -oP $AMIXER_VOLUME_REGEX
+amixer get Master | grep -oP $AMIXER_VOLUME_REGEX | head -n 1
